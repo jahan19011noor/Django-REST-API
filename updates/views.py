@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from .models import Update
@@ -8,12 +9,34 @@ from .models import Update
         # return render(request, "detail_view.html", {"some_key": "some_value", "some_other_key": "some_other_value"})
             # the context gets converted to JSON data
     #return HttpResponse(get_template("template_path").render({},request)) --> does the same
+    # sent content type to specify type of context return:
+        # HttpResponse("Text only, please.", content_type="text/plain")
 
-def detail_view(request):
+def json_response_view(request):
 
     data = {
         "count": 1000,
         "content": "Some new content",
         "boolean": True
     }
+    # If safe is set to False, any object can be passed for serialization (otherwise only dict instances are allowed)
+        # example:
+        # return JsonResponse("test string", safe=False)
+
+    # default Content-Type header is set to application/json.
     return JsonResponse(data)
+
+
+def http_response_view(request):
+    data = {
+        "count": 1000,
+        "content": "Some new content",
+        "boolean": True
+    }
+
+    json_data = json.dumps(data)
+
+    # sent content_type to specify type of context return:
+        # HttpResponse("Text only, please.", content_type="text/plain")
+
+    return HttpResponse(json_data, content_type="application/json")

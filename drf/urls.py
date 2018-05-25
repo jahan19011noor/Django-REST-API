@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from updates.views import detail_view
+from updates.views import json_response_view, http_response_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', detail_view),
+    url(r'^json/$', json_response_view),
+    url(r'^http/$', http_response_view),
 ]
