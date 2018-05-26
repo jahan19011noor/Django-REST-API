@@ -2,6 +2,7 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views.generic import View
+from django.core.serializers import serialize
 from .models import Update
 from drf.mixins import JsonResponseMixin
 
@@ -63,3 +64,17 @@ class JsonResponseMixinView(JsonResponseMixin, View):
 
         # return self.render_to_json_response("test data", safe=False)
         return self.render_to_json_response(data)
+
+class SerializedDetailView(View):
+    def get(self, request, *args, **kwargs):
+        obj = Update.objects.get(id=1)
+        json_data = serialize('json', [obj, ], fields=('user', 'content'))
+
+        return HttpResponse(json_data, content_type='application/json')
+
+class SerializedListView(View):
+    def get(self, request, *args, **kwargs):
+        obj_list = Update.objects.all()
+        json_data = serialize("json", obj_list, fields=('user', 'content'))
+
+        return HttpResponse(json_data, content_type="application/json")
