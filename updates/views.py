@@ -1,7 +1,9 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
+from django.views.generic import View
 from .models import Update
+from drf.mixins import JsonResponseMixin
 
 #def detial_view(request):
     #return render(request, template_name, context_in_dict_form) # return JSON data  --> JS Object Notion
@@ -40,3 +42,24 @@ def http_response_view(request):
         # HttpResponse("Text only, please.", content_type="text/plain")
 
     return HttpResponse(json_data, content_type="application/json")
+
+class JsonCBV(View):
+    def get(self, request, *args, **kwargs):
+        data = {
+            "count": 1000,
+            "content": "Some new content",
+            "boolean": True
+        }
+
+        return JsonResponse(data)
+
+class JsonResponseMixinView(JsonResponseMixin, View):
+    def get(self, request, *args, **kwargs):
+        data = {
+            "count": 1000,
+            "content": "Some new content",
+            "boolean": True
+        }
+
+        # return self.render_to_json_response("test data", safe=False)
+        return self.render_to_json_response(data)

@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from updates.views import json_response_view, http_response_view
+from updates.views import json_response_view, http_response_view, JsonCBV, JsonResponseMixinView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^json/$', json_response_view),
+    url(r'^json/$', JsonCBV.as_view()),
+    url(r'^jrm/$', JsonResponseMixinView.as_view()),
     url(r'^http/$', http_response_view),
 ]
